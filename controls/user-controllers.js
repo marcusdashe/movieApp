@@ -1,5 +1,8 @@
 const mongoose = require("mongoose")
+const shortid = require("shortid")
 const { User } = require("../models/userModels")
+
+
 
 
 
@@ -14,8 +17,14 @@ module.exports = {
             return
         }
 
-        let data = req.body
-        let user = User(data)
+        let user = User({
+            firstName: req.body.firstname,
+            lastName: req.body.lastname,
+            email: req.body.email,
+            phone: req.body.phone,
+            referralCode: shortid.generate(),
+            referrerCode: req.body.referrercode
+        })
         user._id = new mongoose.Types.ObjectId
         user.setPassword(req.body.password)
 
@@ -24,7 +33,8 @@ module.exports = {
         }).catch(err => {
             if(err){
                 res.status(500).send({
-                    "message": err.message || "Error occured while trying to create a user"
+                    "message": err.message || "Error occured while trying to create a user",
+                    "referal code": user.referralCode
                 })
             }
         })
