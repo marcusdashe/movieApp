@@ -30,7 +30,7 @@ app.use(morgan('combined', { stream: winston.stream }));
 
 var corsOptions = {origin: process.env.LOCALHOST};
 
-app.use('/apiv1', cors(corsOptions), apiRouter);
+app.use('/api', cors(corsOptions), apiRouter);
 
 app.use(function(req, res, next){
     next(createError(404));
