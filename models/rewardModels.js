@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 const crypto = require("crypto")
 const uniqueValidator = require("mongoose-unique-validator")
-const mongoConfig = require("../config/credentials")
 
 mongoose.Promise = global.Promise
 
@@ -22,4 +21,4 @@ const RewardSchema = new Schema({
 RewardSchema.plugin(uniqueValidator, {message: "Reward has been taken"})
 
 
-module.exports.Reward = mongoConfig.model("Reward", RewardSchema)
+module.exports = mongoose.model("Reward", RewardSchema)

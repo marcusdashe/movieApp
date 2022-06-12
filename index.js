@@ -19,8 +19,7 @@ const normalizePort = (val) => {
 const onError = (error)=> {
     if(error.syscall !== "listen")
         throw error
-    
-        
+         
 
 const bind = typeof port === "string" ? "Pipe " + port : "Port " + port
 
@@ -44,12 +43,14 @@ const onListening = () => {
     debug("Listening on" + bind)
 }
 
-const port = normalizePort(process.env.PORT || "3000")
+const port = normalizePort(process.env.PORT || "5000")
 app.set("port", port)
 
 const server = http.createServer(app)
 
-server.listen(port)
+server.listen(port, ()=>{
+    console.log(`Server connected at port ${port}`)
+})
 server.on("error", onError)
 server.on("listening", onListening)
 

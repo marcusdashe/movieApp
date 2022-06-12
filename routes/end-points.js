@@ -1,6 +1,7 @@
 const express = require("express")
 const userHandlers = require("../controls/user-controllers")
-const coinbaseHandlers = require("../controls/coinbase-controllers")
+const coinbaseHandlers = require("../controls/coinbase-controllers");
+const userCtr = require('../controls/auth')
 
 const router = express.Router()
 
@@ -9,21 +10,35 @@ const router = express.Router()
 
 router.get("/user", userHandlers.getAllUsers)
 
-router.post("/user/create", userHandlers.createUser)
+router.post("/signup", userCtr.signup);
 
-router.get("/user/:id", userHandlers.getUserByID)
+router.get("/resend-verification-link", userCtr.resendVerificationLink);
 
-router.get("/user/:email", userHandlers.getUserByEmail)
+router.get("/verify-account", userCtr.verifyAccount);
 
-router.put("/user/id", userHandlers.updateUserByID)
+router.post("/signin", userCtr.signin);
 
-router.put("/user/email", userHandlers.updateUserByEmail)
+router.post("/refreshtoken", userCtr.refreshtoken);
 
-router.delete("/user", userHandlers.deleteUserByID)
+router.post("/reset-pass-request", userCtr.resetPassRequest);
 
-router.delete("/user/all", userHandlers.deleteAllUsers)
+router.post('/reset-pass', userCtr.resetPass)
 
-router.post("/user/all", userHandlers.deleteAllUsers)
+router.get('/remove-unverified-users', userCtr.removeUnverifiedUser)
+
+// router.get("/:id", userHandlers.getUserByID)
+
+// router.get("/:email", userHandlers.getUserByEmail)
+
+// router.put("/:id", userHandlers.updateUserByID)
+
+// router.put("/email", userHandlers.updateUserByEmail)
+
+router.delete("/:id", userHandlers.deleteUserByID)
+
+router.delete("/all", userHandlers.deleteAllUsers)
+
+router.post("/all", userHandlers.deleteAllUsers)
 
 // router.post("/user/activate", userHandlers.activateUser)
 

@@ -21,13 +21,22 @@ const options = {
     }
 }
 
+// const logger = winston.createLogger({
+//     transport: [
+//         new winston.transports.File(options.file),
+//         new winston.transports.Console(options.console)
+//     ],
+//     exitOnError: false,
+// })
+
 const logger = winston.createLogger({
-    transport: [
-        new winston.transports.File(options.file),
-        new winston.transports.Console(options.console)
-    ],
-    exitOnError: false,
-})
+    level: 'info',
+    format: winston.format.json(),
+    transports: [
+      new winston.transports.Console(options.console),
+      new winston.transports.File(options.file)
+    ]
+  });
 
 logger.stream = {
     write: (message, encoding)=> { logger.info(message)}

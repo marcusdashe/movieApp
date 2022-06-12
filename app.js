@@ -6,9 +6,12 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 const morgan = require("morgan")
 const winston = require("./config/winstonConfig")
-const apiRouter = require("./routes/end-points")
+const db = require('./config/db')
 
-const app = express()
+const app = express();
+
+//database
+db()
 
 // Use React as Template Engine
 // app.set("views", path.join(__dirname, "views"))
@@ -24,13 +27,18 @@ app.use(cookieParser());
 
 //parse a request of content type: application/json
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(morgan('combined', { stream: winston.stream }));
 
 var corsOptions = {origin: process.env.LOCALHOST};
+app.use(cors(corsOptions))
 
-app.use('/api', cors(corsOptions), apiRouter);
+//register schema
+// require('./models/user');
+// require('./model/passwordReset');
+// require('./model/rewardModels');
+
+app.use('/api/user',  require("./routes/end-points"));
 
 app.use(function(req, res, next){
     next(createError(404));
