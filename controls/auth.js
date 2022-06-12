@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 // const User = mongoose.model('User');
 const User = require('../models/user')
 // const PasswordReset = mongoose.model('PasswordReset');
-//const PasswordReset = require('../models/passwordReset');
+const PasswordReset = require('../models/passwordReset');
 const bcrypt = require("bcrypt");
 const createDOMPurify = require('dompurify');
 const {JSDOM} = require('jsdom');
@@ -222,7 +222,10 @@ module.exports ={
             }
         }
         catch(err){
-            return res.status(505).json({status: false, msg: "Server error! Please contact the admin"});
+            if(err.message = "jwt expired"){
+                return res.status(400).json({status: false, msg: "User not authenticated! Please login or register"});
+            }
+            return res.status(505).json({status: false, msg: err.message});
         }
     },
 
@@ -240,9 +243,9 @@ module.exports ={
                     return res.status(400).json({status: false, msg: "User not found! Please register"});
 
                 }
-                if(!user.isVerified){
-                    return res.status(400).json({status: false, msg: "Your account is not verified"});
-                }
+                // if(!user.isVerified){
+                //     return res.status(400).json({status: false, msg: "Your account is not verified"});
+                // }
                 if(VERIFY_EMAILS){
                     // check passwordReset collection if user already exist, then update the toke
                     const oldUser = await PasswordReset.findOne({user: user._id})
@@ -264,12 +267,10 @@ module.exports ={
                         const data = {email: user.email, passwordReset}
                         passResetLink(data, res);
                     }
-        
                 }
                 else{
                     return res.status(200).json({status: true, msg: "Reset your password"});
                 }
-                
             }
         }
         catch(err){
@@ -313,9 +314,9 @@ module.exports ={
                 return res.status(400).json({status: false, msg: "User not found; you may have been removed due to not verifying your account for up to 72 hours. Please register again"});
             }
             
-            if(!user.isVerified){
-                return res.status(400).json({status: false, msg: "Your account is not verified"});
-            }
+            // if(!user.isVerified){
+            //     return res.status(400).json({status: false, msg: "Your account is not verified"});
+            // }
             
             // 1. remove the token from PasswordReset model
             await PasswordReset.findOneAndUpdate({user: token_.user}, {$set: {token: ""}})

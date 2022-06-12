@@ -55,6 +55,6 @@ module.exports = async(data, res)=>{
 
     }else{
 
-        return res.status(200).json({status: true, msg: "On development mode! Please check below to reset your password", URL});
+        return res.status(200).json({status: true, msg: "On development mode! Please check below to reset your password", token: passwordReset.token});
     }
 }
