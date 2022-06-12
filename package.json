@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/marcusdashe/smartEarnerBackend.git"
+    "url": "https://github.com/marcusdashe/movieApp.git"
   },
   "scripts": {
     "start": "nodemon index.js"

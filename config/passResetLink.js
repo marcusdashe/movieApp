@@ -1,6 +1,6 @@
 require('dotenv').config();
 const PRODUCTION = Boolean(process.env.PRODUCTION);
-const emailing = require("./emailing/emailing")
+const emailing = require("./emailing")
 
 module.exports = async(data, res)=>{
     const {email, passwordReset} = data;

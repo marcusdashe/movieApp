@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const PRODUCTION = Boolean(process.env.PRODUCTION);
-const emailing = require("./emailing/emailing")
+const emailing = require("./emailing")
 
 function generateAccesstoken(id){
     return jwt.sign({id}, process.env.JWT_ACCESS_SECRETE, {expiresIn: process.env.JWT_ACCESS_DURATION})

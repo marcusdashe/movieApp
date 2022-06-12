@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const User = require('../models/user')
 // const PasswordReset = mongoose.model('PasswordReset');
 const PasswordReset = require('../models/passwordReset');
-const ReferralReward = require('../models/referralRewardModel');
 
 const bcrypt = require("bcrypt");
 const createDOMPurify = require('dompurify');
