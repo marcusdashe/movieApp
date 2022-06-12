@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose
+const objectID = Schema.Types.ObjectId
+
 const schema = new mongoose.Schema(
     {
         username: {
@@ -33,7 +36,13 @@ const schema = new mongoose.Schema(
         time: {
             type: Number,
             default: Date.now()
-        }
+        },
+        referree: [ {
+            users: { 
+                type: objectID,
+                ref: 'User'
+            }
+        } ],
     },
     {
         timestamps: true

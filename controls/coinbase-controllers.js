@@ -1,15 +1,15 @@
-const mongoose = require("mongoose")
-const { User } = require("../models/rewardModels")
+// const mongoose = require("mongoose")
+// const { User } = require("../models/rewardModels")
 
 
 
 
-module.exports = {
+// module.exports = {
 
-    // User's Controllers
+//     // User's Controllers
 
-    pay: (req, res)=> {
-        console.log("Coinbase")
-    }
+//     pay: (req, res)=> {
+//         console.log("Coinbase")
+//     }
 
-}
+// }

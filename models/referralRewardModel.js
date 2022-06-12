@@ -9,16 +9,18 @@ const objectID = Schema.Types.ObjectId
 
 const RewardSchema = new Schema({
     user: { type: objectID, ref: 'User'},
-    referralCodes: [ {
+    referree: [ {
         users: { 
             type: objectID,
             ref: 'User'
         }
     } ],
-    referrerCode: { type: String, unique: true, default: null }
 }, { timestamp: true })
 
 RewardSchema.plugin(uniqueValidator, {message: "Reward has been taken"})
 
 
-module.exports = mongoose.model("Reward", RewardSchema)
+module.exports = mongoose.model("ReferralReward", RewardSchema)
+
+// referrer code
+// referral code

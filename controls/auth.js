@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const User = require('../models/user')
 // const PasswordReset = mongoose.model('PasswordReset');
 const PasswordReset = require('../models/passwordReset');
+const ReferralReward = require('../models/referralRewardModel');
+
 const bcrypt = require("bcrypt");
 const createDOMPurify = require('dompurify');
 const {JSDOM} = require('jsdom');
@@ -41,14 +43,15 @@ module.exports ={
                 cpassword: DOMPurify.sanitize(req.body.cpassword),
                 username: DOMPurify.sanitize(req.body.username),
                 email: DOMPurify.sanitize(req.body.email),
+                referrerCode: DOMPurify.sanitize(req.body.referrerCode),
             }
 
-            const { email, username, password, cpassword } = data;
-            if(!email || !password || !cpassword){
+            const { email, username, password, cpassword, referrerCode } = data;
+            if(!email || !password || !cpassword || !username){
                 return res.status(400).json({status: false, msg: "Fill all required fields!"});
     
             }
-            else if(password != cpassword){
+            else if(password !== cpassword){
                 return res.status(405).json({status: false, msg: "Passwords do not match!"});
                 
             }else{
@@ -78,14 +81,25 @@ module.exports ={
                     referralCode: ran.referralCode(),
                     password: hashedPass
                 })
+
+                if(referrerCode){
+                    const referringUser = await User.findOne({referralCode: referrerCode})
+                    if(referringUser){
+                        await User.findByIdAndUpdate({_id: referringUser._id}, {$push: {
+                            referree: user._id
+                        }})
+                    }
+                    
+                }
             
                 //send account activation link to the users
                 if(VERIFY_EMAILS){
                     await user.save();
                     verificationLink(user, res)
                 }else{
+                    const accesstoken = generateAccesstoken(user._id), refreshtoken = generateRefreshtoken(user._id)
                     await user.save()
-                    return res.status(200).json({status: true, msg: "Registration successfull", isVerified: user.isVerified})
+                    return res.status(200).json({status: true, msg: "Registration successfull", isVerified: user.isVerified, accesstoken, refreshtoken})
                 }
             }
         }
